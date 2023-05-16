@@ -1,3 +1,5 @@
+import java.util.Scanner;
+
 public class Graph {
 
     private String[] nodes;
@@ -166,7 +168,7 @@ public class Graph {
 
         } //end while
 
-        TransformAndPrintDijkstrasResult(dijkstraResult,node, initialNode);
+        //TransformAndPrintDijkstrasResult(dijkstraResult,node, initialNode);
         return dijkstraResult;
     } //end findMinimumPaths
 
@@ -201,17 +203,17 @@ public class Graph {
         int destiniesIndex = getNodeIndex(destiny);
 
         if (origin.equals(destiny)) {
-            System.out.print("The minimum path for " + origin + " to " + destiny + " is: " + dijkstraResult[destiniesIndex][1] + " (" + origin + "  )");
+            System.out.print("The minimum path for " + origin + " to " + destiny + " is: \n" + dijkstraResult[destiniesIndex][1] + "m (" + origin + ")");
         } //end if
         else {
-            System.out.print("The minimum path for " + origin + " to " + destiny + " is: " + dijkstraResult[destiniesIndex][1] + " (" + nodes[(int) dijkstraResult[destiniesIndex][0]] + "  ");
+            System.out.print("The minimum path for " + origin + " to " + destiny + " is: \n" + dijkstraResult[destiniesIndex][1] + "m (" + nodes[(int) dijkstraResult[destiniesIndex][0]]);
 
             while (dijkstraResult[destiniesIndex][2]!=originIndex) {
-                System.out.print(nodes[(int) dijkstraResult[destiniesIndex][2]] + " ");
+                System.out.print("<-"+nodes[(int) dijkstraResult[destiniesIndex][2]] );
                 destiniesIndex = (int) dijkstraResult[destiniesIndex][2];
             } //end while
 
-            System.out.println(origin + ")");
+            System.out.println("<-"+origin + ")");
         } //end else
 
     } //end showMinimumPath
@@ -234,6 +236,92 @@ public class Graph {
             System.out.println();
         } //end for
     } //end showGraph
+
+    public boolean askMinimumPaths () {
+        Scanner keyboard;
+        keyboard = new Scanner(System.in);
+        int option;
+        int departureNode;
+        int arrivalNode;
+
+        System.out.println("\n");
+        System.out.println("(1) How to get somewhere");
+        System.out.println("(2) Finish");
+        option = keyboard.nextInt();
+        switch (option) {
+            case 1 -> {
+                departureNode = askDepartureNode();
+                double[][] minimumPaths = findMinimumPaths(nodes[departureNode]);
+                arrivalNode = askArrivalNode(departureNode, minimumPaths);
+                showMinimumPath(minimumPaths, nodes[departureNode], nodes[arrivalNode]);
+                askMinimumPaths();
+                ;
+            }
+            case 2 -> {
+                System.out.println("\n");
+                return true;
+            }
+            default -> {
+                System.out.println("Type a valid input...\n");
+                askMinimumPaths();
+            }
+        }
+        return true;
+    } //end askMinimumPaths
+
+    private int askDepartureNode () {
+        Scanner keyboard;
+        keyboard = new Scanner(System.in);
+        boolean validInput = false;
+        int departureNode = -1;
+        while (!validInput) {
+            System.out.println("\nWhere is your departing point?\n");
+            for (int i = 0; i<numberOfNodes;i++) {
+                System.out.printf("(%d) %s\n", i+1, nodes[i]);
+            } //end for
+            departureNode = keyboard.nextInt();
+            if (departureNode<numberOfNodes+1 && departureNode>0) {
+                departureNode = departureNode-1;
+                validInput = true;
+            } //end if
+            else {
+                System.out.println("Type a valid input...\n");
+            } //end else
+        } //end while
+        return departureNode;
+    } //end askDepartureNode
+
+    private int askArrivalNode (int departureNode, double[][] minimumPaths) {
+        Scanner keyboard;
+        keyboard = new Scanner(System.in);
+        boolean validInput = false;
+        int arrivalNode = -1;
+        while (!validInput) {
+            System.out.println("\nWhere do you want to go?\n");
+            for (int i = 0; i<numberOfNodes;i++) {
+                if (i>departureNode) {
+                    System.out.printf("(%d) %s\n", i, nodes[i]);
+                } //end if
+                else {
+                    if (i<departureNode) {
+                        System.out.printf("(%d) %s\n", i+1, nodes[i]);
+                    } //end if
+                } //end else
+            } //end for
+            arrivalNode = keyboard.nextInt();
+            if (arrivalNode<numberOfNodes && arrivalNode>0) {
+                if (arrivalNode<departureNode) {
+                    arrivalNode=arrivalNode-1;
+                }
+                validInput = true;
+            } //end if
+            else {
+                System.out.println("Type a valid input...\n");
+            } //end else
+        } //end while
+
+        return arrivalNode;
+    } //end askArrivalNode
 
 } //end class
 

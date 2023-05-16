@@ -2,6 +2,7 @@ import java.awt.*;
 import java.beans.BeanDescriptor;
 
 public class Main {
+
     public static void main(String[] args) {
         String EP = "Ring-road entrance";
         String EJ = "Meditation garden entrance";
@@ -111,21 +112,7 @@ public class Main {
 
         udlap.addEdgeByName(SL, EC,236.71);
 
-        udlap.showGraph();
-        System.out.println("\nMAIN ENTRANCE\n");
-        double[][] dijkstraResult = udlap.findMinimumPaths(ER);
-        System.out.println("\nCOURTS ENTRANCE\n");
-        dijkstraResult = udlap.findMinimumPaths(EC);
-        udlap.showMinimumPath(dijkstraResult,EC,HU);
-        System.out.println("\nGAOS ENTRANCE\n");
-        dijkstraResult = udlap.findMinimumPaths(EG);
-        System.out.println("\nGARDEN ENTRANCE\n");
-        dijkstraResult = udlap.findMinimumPaths(EJ);
-        System.out.println("\nRING-ROAD ENTRANCE\n");
-        dijkstraResult = udlap.findMinimumPaths(EP);
-        udlap.showMinimumPath(dijkstraResult,EP,CE);
-        System.out.println("\nFOUNTAIN\n");
-        dijkstraResult = udlap.findMinimumPaths(FN);
-        udlap.showMinimumPath(dijkstraResult,FN,HU);
+        udlap.askMinimumPaths();
+
     }
 }
